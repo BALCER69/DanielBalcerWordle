@@ -1,6 +1,6 @@
 ﻿using Microsoft.Maui.Controls;
 
-namespace WordleDB
+namespace DanielBalcerWordle
 {
     public partial class App : Application
     {

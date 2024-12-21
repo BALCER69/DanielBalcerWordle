@@ -7,7 +7,7 @@ using System.Collections.Generic;
 using System.Linq;
 using Microsoft.Maui.Storage; 
 
-namespace WordleDB
+namespace DanielBalcerWordle
 {
     public partial class MainPage : ContentPage
     {
