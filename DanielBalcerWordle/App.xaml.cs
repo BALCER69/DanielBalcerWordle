@@ -1,4 +1,6 @@
-﻿namespace DanielBalcerWordle
+﻿using Microsoft.Maui.Controls;
+
+namespace WordleDB
 {
     public partial class App : Application
     {
@@ -6,7 +8,7 @@
         {
             InitializeComponent();
 
-            MainPage = new AppShell();
+            MainPage = new NavigationPage(new StartPage());
         }
     }
 }

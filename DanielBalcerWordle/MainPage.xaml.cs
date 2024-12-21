@@ -1,75 +1,98 @@
-﻿public partial class MainPage : ContentPage
+﻿using Microsoft.Maui.Controls;
+using Microsoft.Maui.Graphics;
+using System;
+using System.Net.Http;
+using System.Threading.Tasks;
+using System.Collections.Generic;
+using System.Linq;
+using Microsoft.Maui.Storage; 
+
+namespace WordleDB
 {
-    private string targetWord;
-    private int currentRow = 0;
-    private Entry[,] entryGrid = new Entry[6, 5];
-    private List<string> validWords = new List<string>();
-    private List<GuessHistory> guessHistory = new List<GuessHistory>();
-
-    private DateTime startTime;
-    private DateTime endTime;
-
-    public MainPage()
+    public partial class MainPage : ContentPage
     {
-        InitializeComponent();
-        CreateGrid();
-        LoadWordListAsync();
-    }
+        private string targetWord;
+        private int currentRow = 0;
+        private Entry[,] entryGrid = new Entry[6, 5];
+        private List<string> validWords = new List<string>();
+        private List<GuessHistory> guessHistory = new List<GuessHistory>();
 
-    private void CreateGrid()
-    {
-        GameGrid.RowDefinitions.Clear();
-        GameGrid.ColumnDefinitions.Clear();
+        private DateTime startTime;
+        private DateTime endTime;
 
-        for (int row = 0; row < 6; row++)
+        private string username; 
+
+    
+        public MainPage(string username)
         {
-            GameGrid.RowDefinitions.Add(new RowDefinition { Height = new GridLength(1, GridUnitType.Auto) });
+            InitializeComponent();
+            this.username = username; 
+            CreateGrid();
+            LoadWordListAsync();
+            LoadHistory(); 
         }
 
-        for (int col = 0; col < 5; col++)
+        private void OnPageAppearing(object sender, EventArgs e)
         {
-            GameGrid.ColumnDefinitions.Add(new ColumnDefinition { Width = new GridLength(1, GridUnitType.Auto) });
+
+            Title = $"Welcome, {username}!";
         }
 
-        for (int row = 0; row < 6; row++)
+        private void CreateGrid()
         {
+
+            GameGrid.RowDefinitions.Clear();
+            GameGrid.ColumnDefinitions.Clear();
+
+            for (int row = 0; row < 6; row++)
+            {
+                GameGrid.RowDefinitions.Add(new RowDefinition { Height = new GridLength(1, GridUnitType.Auto) });
+            }
+
             for (int col = 0; col < 5; col++)
             {
-                var entry = new Entry
+                GameGrid.ColumnDefinitions.Add(new ColumnDefinition { Width = new GridLength(1, GridUnitType.Auto) });
+            }
+
+            for (int row = 0; row < 6; row++)
+            {
+                for (int col = 0; col < 5; col++)
                 {
-                    MaxLength = 1,
-                    HorizontalOptions = LayoutOptions.Center,
-                    VerticalOptions = LayoutOptions.Center,
-                    Keyboard = Keyboard.Text,
-                    BackgroundColor = Colors.LightGray,
-                    TextColor = Colors.Black,
-                    HeightRequest = 60,
-                    WidthRequest = 60,
-                    FontSize = 24
-                };
+                    var entry = new Entry
+                    {
+                        MaxLength = 1,
+                        HorizontalOptions = LayoutOptions.Center,
+                        VerticalOptions = LayoutOptions.Center,
+                        Keyboard = Keyboard.Text,
+                        BackgroundColor = Colors.LightGray,
+                        TextColor = Colors.Black,
+                        HeightRequest = 60,  
+                        WidthRequest = 60,   
+                        FontSize = 24   
+                    };
 
-                entry.TextChanged += OnLetterTextChanged;
-                entryGrid[row, col] = entry;
+                    entry.TextChanged += OnLetterTextChanged; 
+                    entryGrid[row, col] = entry;
 
-                var frame = new Frame
-                {
-                    Content = entry,
-                    BackgroundColor = Colors.Transparent,
-                    BorderColor = Colors.Black,
-                    CornerRadius = 5,
-                    Padding = 0,
-                    Margin = new Thickness(5)
-                };
+                    var frame = new Frame
+                    {
+                        Content = entry,
+                        BackgroundColor = Colors.Transparent, 
+                        BorderColor = Colors.Black, 
+                        CornerRadius = 5,       
+                        Padding = 0, 
+                        Margin = new Thickness(5)
+                    };
 
-                Grid.SetRow(frame, row);
-                Grid.SetColumn(frame, col);
+                    Grid.SetRow(frame, row);
+                    Grid.SetColumn(frame, col);
 
-                GameGrid.Children.Add(frame);
+                    GameGrid.Children.Add(frame);
+                }
             }
         }
-    }
 
-    private async void LoadWordListAsync()
+        private async void LoadWordListAsync()
     {
         try
         {
@@ -171,7 +194,7 @@
     }
     public DateTime DateTime { get; set;
     }
-    public bool IsAnswer { get; set; 
+    public bool IsAnswer { get; set;    
     }
     public TimeSpan TotalTime { get; set;
     }
