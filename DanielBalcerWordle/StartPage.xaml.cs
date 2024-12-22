@@ -11,7 +11,6 @@ namespace DanielBalcerWordle
 
         private async void OnStartGameClicked(object sender, EventArgs e)
         {
-            
             string username = UsernameEntry.Text?.Trim();
 
             if (string.IsNullOrEmpty(username))

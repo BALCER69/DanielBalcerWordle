@@ -23,7 +23,8 @@
                FontSize="18"
                TextColor="Black"
                HorizontalOptions="FillAndExpand"
-               BackgroundColor="White"  />
+               BackgroundColor="White"
+         />
 
         <!-- Start Game Button -->
         <Button Text="Start Game"
